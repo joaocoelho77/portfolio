@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>João Pedro Coelho · Dados</title>
+<meta name="description" content="Portfólio de projetos em dados de João Pedro Coelho, Ciência de Dados e IA na PUC-SP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: um caderno de laboratório em papel milimetrado. O índice é um DataFrame; cada projeto é um registro aberto. */
+:root{
+  --papel:#EEF2EF;
+  --papel-2:#E3E9E5;
+  --tinta:#14211D;
+  --tinta-suave:#4C5B55;
+  --grade:rgba(31,94,122,.10);
+  --azul:#1F5E7A;
+  --marca:#F0D33C;
+  --linha:#C9D3CE;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --texto:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --papel:#0F1614;--papel-2:#17201D;--tinta:#E4EBE7;--tinta-suave:#9AABA4;
+  --grade:rgba(111,179,210,.08);--azul:#7DBBD8;--marca:#D9BE2E;--linha:#2A3632;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --papel:#0F1614;--papel-2:#17201D;--tinta:#E4EBE7;--tinta-suave:#9AABA4;
+  --grade:rgba(111,179,210,.08);--azul:#7DBBD8;--marca:#D9BE2E;--linha:#2A3632;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+body{
+  background-color:var(--papel);
+  background-image:
+    linear-gradient(var(--grade) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grade) 1px,transparent 1px);
+  background-size:24px 24px;
+  color:var(--tinta);font-family:var(--texto);font-size:1.0625rem;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.folha{max-width:1080px;margin:0 auto;padding-block:40px 64px;display:flex;flex-direction:column;gap:88px}
+a{color:var(--azul)}
+a:focus-visible,.linha-df:focus-visible{outline:2px solid var(--azul);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:.8125rem;letter-spacing:.01em}
+.marca{background:linear-gradient(transparent 58%,var(--marca) 58%);padding:0 .1em}
+
+/* topo */
+.topo{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px 24px;border-bottom:2px solid var(--tinta);padding-bottom:12px}
+.topo strong{font-family:var(--display);font-stretch:110%;font-weight:800;font-size:1rem;letter-spacing:.04em;text-transform:uppercase}
+.topo nav{display:flex;gap:20px;flex-wrap:wrap}
+.topo nav a{color:var(--tinta);text-decoration:none;font-family:var(--mono);font-size:.8125rem}
+.topo nav a:hover{color:var(--azul);text-decoration:underline}
+
+/* abertura */
+.abertura{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end}
+.abertura h1{font-family:var(--display);font-stretch:62%;font-weight:900;font-size:clamp(3.4rem,11vw,8.5rem);line-height:.86;letter-spacing:-.01em;margin:0;text-transform:uppercase;text-wrap:balance}
+.abertura h1 span{display:block;font-stretch:125%;font-weight:400;font-size:.32em;letter-spacing:.02em;line-height:1.1;margin-top:.5em;text-transform:none;color:var(--tinta-suave)}
+.terminal{background:var(--tinta);color:var(--papel);padding:18px 20px;font-family:var(--mono);font-size:.8125rem;line-height:1.7;min-width:0;overflow-x:auto}
+.terminal .p{color:var(--marca)}
+.terminal .c{opacity:.6}
+.terminal pre{margin:0;font:inherit;white-space:pre}
+
+/* índice DataFrame */
+.secao-titulo{display:flex;align-items:baseline;gap:14px;margin:0 0 18px;flex-wrap:wrap}
+.secao-titulo h2{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:.875rem;letter-spacing:.14em;text-transform:uppercase;margin:0}
+.secao-titulo span{font-family:var(--mono);font-size:.8125rem;color:var(--tinta-suave)}
+.df-wrap{overflow-x:auto;border:1px solid var(--linha);background:var(--papel)}
+table.df{border-collapse:collapse;width:100%;min-width:720px;font-family:var(--mono);font-size:.8125rem;font-variant-numeric:tabular-nums}
+.df th,.df td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--linha);vertical-align:top}
+.df thead th{font-weight:600;background:var(--papel-2);border-bottom:2px solid var(--tinta)}
+.df td:first-child,.df th:first-child{color:var(--tinta-suave);width:3ch;border-right:1px solid var(--linha)}
+.linha-df{cursor:pointer;transition:background .15s}
+.linha-df:hover{background:var(--papel-2)}
+.linha-df td:nth-child(2){font-family:var(--texto);font-size:.9375rem;font-weight:600;color:var(--tinta)}
+
+/* registros */
+.registro{display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;border-top:2px solid var(--tinta);padding-top:22px;scroll-margin-top:24px}
+.ficha{display:flex;flex-direction:column;gap:14px;font-family:var(--mono);font-size:.8125rem;color:var(--tinta-suave)}
+.ficha .idx{font-family:var(--display);font-stretch:62%;font-weight:900;font-size:5.5rem;line-height:.8;color:var(--tinta)}
+.ficha dl{margin:0;display:grid;gap:10px}
+.ficha dt{text-transform:uppercase;letter-spacing:.1em;font-size:.6875rem}
+.ficha dd{margin:2px 0 0;color:var(--tinta)}
+.corpo{display:flex;flex-direction:column;gap:24px;min-width:0}
+.corpo h3{font-family:var(--display);font-stretch:88%;font-weight:800;font-size:clamp(1.75rem,4vw,2.6rem);line-height:1.02;margin:0;text-wrap:balance}
+.corpo p{margin:0;max-width:65ch}
+.numeros{display:flex;flex-wrap:wrap;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+.numeros div{flex:1 1 140px;padding:14px 16px 14px 0;display:flex;flex-direction:column;gap:2px}
+.numeros b{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:2.1rem;line-height:1;font-variant-numeric:tabular-nums}
+.numeros small{font-family:var(--mono);font-size:.75rem;color:var(--tinta-suave)}
+.ranking{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 24px;counter-reset:r;font-size:.9375rem}
+.ranking li{counter-increment:r;display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--linha)}
+.ranking li::before{content:counter(r,decimal-leading-zero);font-family:var(--mono);font-size:.75rem;color:var(--azul);padding-top:.2em}
+.rotulo{font-family:var(--mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-suave);margin:0 0 6px}
+.etapas{margin:0;padding:0;list-style:none;display:grid;gap:8px;max-width:65ch}
+.etapas li{display:grid;grid-template-columns:auto 1fr;gap:12px}
+.etapas li::before{content:"→";font-family:var(--mono);color:var(--azul)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-family:var(--mono);font-size:.75rem;border:1px solid var(--tinta);padding:3px 8px}
+.tags span.mais{border-style:dashed;color:var(--tinta-suave);border-color:var(--tinta-suave)}
+
+/* mídia */
+.midias{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+figure{margin:0;display:flex;flex-direction:column;gap:6px}
+figure .quadro{max-width:100%;background:var(--papel-2);border:1px solid var(--linha);overflow:hidden;display:grid;place-items:center;min-height:120px}
+figure img{display:block;width:100%;height:auto;max-height:640px;object-fit:contain}
+figure.vazio img{display:none}
+figure .aviso{display:none;font-family:var(--mono);font-size:.75rem;color:var(--tinta-suave);text-align:center;padding:16px}
+figure.vazio .aviso{display:block}
+figcaption{font-family:var(--mono);font-size:.75rem;color:var(--tinta-suave)}
+
+.rodape{border-top:2px solid var(--tinta);padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:.8125rem;color:var(--tinta-suave)}
+
+@media (max-width:760px){
+  .abertura{grid-template-columns:1fr}
+  .registro{grid-template-columns:1fr;gap:18px}
+  .ficha{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:12px 24px}
+  .ficha .idx{font-size:3.5rem}
+  .folha{gap:64px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<div class="folha">
+  <header class="topo">
+    <strong>João Pedro Coelho</strong>
+    <nav aria-label="Projetos">
+      <a href="#mineracao">[0] mineração</a>
+      <a href="#bi">[1] bi</a>
+      <a href="#sgbd">[2] sgbd</a>
+      <a href="#aves">[3] aves</a>
+    </nav>
+  </header>
+
+  <section class="abertura">
+    <h1>Projetos em dados<span>Ciência de Dados e IA · PUC-SP</span></h1>
+    <div class="terminal" aria-label="Resumo do portfólio">
+<pre><span class="p">&gt;&gt;&gt;</span> projetos.shape
+(4, 6)
+<span class="p">&gt;&gt;&gt;</span> projetos["contexto"].unique()
+['PUC-SP', 'extensão com empresa real',
+ 'extensão com dados reais']
+<span class="p">&gt;&gt;&gt;</span> projetos["periodo"].min(), .max()
+('fev/2026', 'out/2026')
+<span class="c"># tudo feito em equipe; tudo documentado</span></pre>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-indice">
+    <div class="secao-titulo"><h2 id="t-indice">projetos.head()</h2><span>clique numa linha para abrir o registro</span></div>
+    <div class="df-wrap">
+      <table class="df">
+        <thead><tr><th></th><th>projeto</th><th>periodo</th><th>tecnica</th><th>ferramentas</th></tr></thead>
+        <tbody>
+          <tr class="linha-df" tabindex="0" data-alvo="mineracao"><td>0</td><td>Priorização de ajuda humanitária por perfis de países</td><td>set–out 2026</td><td>agrupamento</td><td>Pandas</td></tr>
+          <tr class="linha-df" tabindex="0" data-alvo="bi"><td>1</td><td>Dashboard de BI para ordens de serviço</td><td>jan–jun 2026</td><td>KPIs, automação</td><td>Power BI</td></tr>
+          <tr class="linha-df" tabindex="0" data-alvo="sgbd"><td>2</td><td>SGBD: catálogo de livros e usuários</td><td>jan–jun 2026</td><td>modelagem relacional</td><td>SQL</td></tr>
+          <tr class="linha-df" tabindex="0" data-alvo="aves"><td>3</td><td>Modelagem preditiva de mortalidade em aves</td><td>fev 2026</td><td>regressão</td><td>Pandas, Scikit-Learn</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 0 -->
+  <article class="registro" id="mineracao">
+    <aside class="ficha">
+      <span class="idx">0</span>
+      <dl>
+        <div><dt>período</dt><dd>set. 2026 – out. 2026</dd></div>
+        <div><dt>equipe</dt><dd>kaique, Théo Henrique</dd></div>
+        <div><dt>vínculo</dt><dd>PUC-SP</dd></div>
+      </dl>
+    </aside>
+    <div class="corpo">
+      <h3>Priorização de ajuda humanitária por perfis de países</h3>
+      <p>Projeto de mineração e análise de dados que agrupa os 167 países da base em quatro perfis de necessidade, a partir de quatro indicadores: mortalidade infantil, renda per capita, inflação e extrema pobreza. Com base no resultado, a recomendação é <span class="marca">concentrar o fundo no Perfil 1</span>. Dentro desse perfil, um índice de necessidade ordena os países. Os demais perfis pedem estratégias diferentes.</p>
+      <div class="numeros">
+        <div><b>167</b><small>países na base</small></div>
+        <div><b>4</b><small>perfis de necessidade</small></div>
+        <div><b>48</b><small>países no Perfil 1</small></div>
+        <div><b>88,75</b><small>mortes / mil nascimentos (mediana, P1)</small></div>
+        <div><b>US$ 1.860</b><small>renda mediana (P1)</small></div>
+        <div><b>55,45%</b><small>em extrema pobreza (P1)</small></div>
+      </div>
+      <div>
+        <p class="rotulo">índice de necessidade · top 10 do Perfil 1</p>
+        <ol class="ranking">
+          <li>Congo</li><li>Nigéria</li><li>Serra Leoa</li><li>Burundi</li><li>Angola</li>
+          <li>Guiné</li><li>Haiti</li><li>Mauritânia</li><li>Malawi</li><li>Timor-Leste</li>
+        </ol>
+      </div>
+      <div class="tags"><span>Análise de dados</span><span>Pandas</span><span class="mais">+3 competências</span></div>
+      <div class="midias">
+        <figure><div class="quadro"><img src="assets/assets/mineracao-documentacao.png" alt="Documentação do projeto de mineração de dados" onerror="this.closest('figure').classList.add('vazio')"><span class="aviso">assets/assets/mineracao-documentacao.png</span></div><figcaption>Documentação do projeto</figcaption></figure>
+      </div>
+    </div>
+  </article>
+
+  <!-- 1 -->
+  <article class="registro" id="bi">
+    <aside class="ficha">
+      <span class="idx">1</span>
+      <dl>
+        <div><dt>período</dt><dd>jan. 2026 – jun. 2026</dd></div>
+        <div><dt>equipe</dt><dd>Théo Henrique, Maria Gabriela e mais 1 pessoa</dd></div>
+        <div><dt>vínculo</dt><dd>Extensão PUC-SP · empresa de climatização</dd></div>
+        <div><dt>status</dt><dd><span class="marca">em uso na operação</span></dd></div>
+      </dl>
+    </aside>
+    <div class="corpo">
+      <h3>Dashboard de BI para monitoramento de ordens de serviço</h3>
+      <p>Atividade extensionista da PUC-SP com uma empresa real do setor de climatização, que precisava acompanhar suas ordens de serviço e ser avisada quando as planilhas mudavam.</p>
+      <div>
+        <p class="rotulo">o que foi entregue</p>
+        <ul class="etapas">
+          <li>Dashboard interativo em Power BI com KPIs e sinalização de status para diferentes níveis da organização.</li>
+          <li>Automação das planilhas.</li>
+          <li>Envio de alertas por e-mail quando há alterações.</li>
+          <li>Sistema implementado e usado no dia a dia da operação da empresa.</li>
+        </ul>
+      </div>
+      <div class="tags"><span>Microsoft Power BI</span><span>Relatórios de KPI</span><span class="mais">+1 competência</span></div>
+      <div class="midias">
+        <figure><div class="quadro"><img src="assets/assets/bi-dashboard.png" alt="Dashboard para análise e visualização de ordens de serviço e turnaround time" onerror="this.closest('figure').classList.add('vazio')"><span class="aviso">assets/assets/bi-dashboard.png</span></div><figcaption>Dashboard para análise e visualização de ordens de serviço e turnaround time</figcaption></figure>
+        <figure><div class="quadro"><img src="assets/assets/bi-fluxo.png" alt="Fluxo de trabalho para automatização e visualização" onerror="this.closest('figure').classList.add('vazio')"><span class="aviso">assets/assets/bi-fluxo.png</span></div><figcaption>Fluxo de trabalho para automatização e visualização</figcaption></figure>
+      </div>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="registro" id="sgbd">
+    <aside class="ficha">
+      <span class="idx">2</span>
+      <dl>
+        <div><dt>período</dt><dd>jan. 2026 – jun. 2026</dd></div>
+        <div><dt>equipe</dt><dd>Théo Henrique, kaique</dd></div>
+        <div><dt>vínculo</dt><dd>PUC-SP</dd></div>
+      </dl>
+    </aside>
+    <div class="corpo">
+      <h3>Sistema de Gerenciamento de Banco de Dados: catálogo de livros e cadastro de usuários</h3>
+      <p>Sistema de banco de dados para organizar, armazenar e recuperar as informações de uma comunidade de leitores. Mantém um cadastro de usuários, com endereço completo, e um catálogo de livros.</p>
+      <div>
+        <p class="rotulo">o que o modelo registra</p>
+        <div class="tags">
+          <span>usuários</span><span>endereços</span><span>livros</span><span>autores</span><span>gêneros</span><span>editoras</span><span>idiomas</span><span>avaliações</span><span>status de leitura</span>
+        </div>
+      </div>
+      <div class="tags"><span>Modelagem de dados</span><span>Entrada de dados</span><span class="mais">+6 competências</span></div>
+      <div class="midias">
+        <figure><div class="quadro"><img src="assets/assets/sgbd-der.png" alt="Diagrama entidade-relacionamento" onerror="this.closest('figure').classList.add('vazio')"><span class="aviso">assets/assets/sgbd-der.png</span></div><figcaption>Diagrama entidade-relacionamento</figcaption></figure>
+        <figure><div class="quadro"><img src="assets/assets/sgbd-documentacao.png" alt="Documentação do projeto de banco de dados" onerror="this.closest('figure').classList.add('vazio')"><span class="aviso">assets/assets/sgbd-documentacao.png</span></div><figcaption>Documentação do projeto</figcaption></figure>
+      </div>
+    </div>
+  </article>
+
+  <!-- 3 -->
+  <article class="registro" id="aves">
+    <aside class="ficha">
+      <span class="idx">3</span>
+      <dl>
+        <div><dt>período</dt><dd>fev. 2026</dd></div>
+        <div><dt>equipe</dt><dd>kaique, Théo Henrique</dd></div>
+        <div><dt>vínculo</dt><dd>Extensão PUC-SP · dados reais de lotes avícolas</dd></div>
+      </dl>
+    </aside>
+    <div class="corpo">
+      <h3>Modelagem preditiva de mortalidade em aves</h3>
+      <p>Análise de dados reais de lotes avícolas para prever a mortalidade. Antes do modelo veio a parte que ninguém vê: a preparação dos dados.</p>
+      <div class="numeros">
+        <div><b>11</b><small>variáveis removidas por vazamento</small></div>
+        <div><b>4</b><small>modelos comparados</small></div>
+        <div><b>Elastic Net</b><small>menor erro</small></div>
+      </div>
+      <div>
+        <p class="rotulo">pipeline</p>
+        <ul class="etapas">
+          <li>Remoção de 11 variáveis com vazamento de dados: elas só existem depois do fim do ciclo e inflariam o resultado.</li>
+          <li>Tratamento de valores ausentes e transformação das categorias em variáveis.</li>
+          <li>Teste e comparação de 4 modelos; o Elastic Net teve o menor erro.</li>
+        </ul>
+      </div>
+      <div>
+        <p class="rotulo">aprendizados</p>
+        <p>Num modelo, a preparação dos dados pesa tanto quanto o algoritmo. Ser honesto com as métricas também conta: o R² mostrou que ainda faltam variáveis, e <span class="marca">adicioná-las é o próximo passo</span>.</p>
+      </div>
+      <div class="tags"><span>Pandas</span><span>Scikit-Learn</span><span class="mais">+2 competências</span></div>
+      <div class="midias">
+        <figure><div class="quadro"><img src="assets/assets/aves-esquema.png" alt="Esquema exemplificando o conteúdo do projeto" onerror="this.closest('figure').classList.add('vazio')"><span class="aviso">assets/assets/aves-esquema.png</span></div><figcaption>Esquema exemplificando o conteúdo do projeto</figcaption></figure>
+      </div>
+    </div>
+  </article>
+
+  <footer class="rodape">
+    <span>João Pedro Coelho · Ciência de Dados e IA · PUC-SP</span>
+    <a href="https://www.linkedin.com/in/jo%C3%A3o-pedro-coelho-818282280" target="_blank" rel="noopener">linkedin.com/in/joão-pedro-coelho-818282280</a>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.linha-df').forEach(function(tr){
+  function ir(){ document.getElementById(tr.dataset.alvo).scrollIntoView({behavior:'smooth'}); }
+  tr.addEventListener('click', ir);
+  tr.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); ir(); } });
+});
+</script>
+
+</body>
+</html>
